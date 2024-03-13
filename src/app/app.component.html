@@ -47,12 +47,20 @@
     </ul>
   </div>
   <main class="d-flex flex-nowrap">
+
   <!-- sidebar -->
   <app-sidebar></app-sidebar>
-  <!-- msgbody -->
-  <app-msgbody></app-msgbody>
-  <!-- msgbox -->
-  <app-inputmsgbox></app-inputmsgbox>
+  <div class="col py-3 ms-3 me-3">
+    <!-- msgbody -->
+    <div class="row">
+      <app-msgbody></app-msgbody>
+    </div>
+
+    <!-- msgbox -->
+    <div class="row">
+      <app-inputmsgbox></app-inputmsgbox>
+    </div>
+  </div>
   </main>
   <script>
     (() => {

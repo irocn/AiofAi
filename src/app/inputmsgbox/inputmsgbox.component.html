@@ -1,0 +1,28 @@
+<head>
+    <style>
+        /* Custom CSS to fix input box at the bottom */
+        .parent-div {
+            position: relative;
+        }
+
+        .fixed-input {
+            position: fixed;
+            bottom: 60px;
+            width: 60%;
+            padding: 10px;
+            /* Adjust as needed */
+        }
+
+        /* Remove focus effect from input */
+        input:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<div class="row">
+    <div class="parent-div p-3 fixed-bottom d-flex justify-content-center align-items-center">
+        <!-- Your content here -->
+        <input type="text" class="form-control fixed-input" placeholder="Chat with Gpt ...">
+    </div>
+</div>
