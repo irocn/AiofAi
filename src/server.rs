@@ -36,7 +36,7 @@ pub struct Disconnect {
 }
 
 /// Send message to specific room
-#[derive(Message)]
+#[derive(Message, Debug)]
 #[rtype(result = "()")]
 pub struct ClientMessage {
     /// Id of the client session
@@ -106,6 +106,7 @@ impl ChatServer {
     }
     /// Send message to all users in the room
     fn send_message(&self, room: &str, message: &str, skip_id: usize) {
+        println!("send msg from room:{}, msg:{}", room, message);
         if let Some(sessions) = self.rooms.get(room) {
             for id in sessions {
                 if *id != skip_id {
@@ -185,14 +186,16 @@ impl Handler<ClientMessage> for ChatServer {
 
     fn handle(&mut self, msg: ClientMessage, _: &mut Context<Self>) {
 
-        if msg.room == "user".to_string() {
+        println!("client msg:{:?}", msg);
+
+        if msg.room != "chatgpt".to_string() {
             println!("send user msg to chatgpt");
             self.send_message("chatgpt", msg.msg.as_str(),0);
         }
 
         if msg.room == "chatgpt".to_string() {
             println!("send chatgpt msg to user");
-            self.send_message("user", msg.msg.as_str(), 0);
+            self.send_message("userdev", msg.msg.as_str(), 0);
         }
     }
 }

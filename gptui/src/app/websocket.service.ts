@@ -1,36 +1,86 @@
+// websocket.service.ts
 import { Injectable } from '@angular/core';
-import * as Rx from "rxjs/Rx";
+import { Observable, Subject } from 'rxjs/Rx';
+import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 
 @Injectable()
-export class WebsocketService {
-  constructor() {}
+export class WebSocketService {
 
-  private subject: Rx.Subject<MessageEvent> | undefined;
+  private socket$: WebSocketSubject<any>;
+  private messagesSubject: Subject<any> = new Subject<any>();
 
-  public connect(url: string): Rx.Subject<MessageEvent> {
-    if (!this.subject) {
-      this.subject = this.create(url);
-      console.log("Successfully connected: " + url);
-    }
-    return this.subject;
+  constructor() {
+
+    this.socket$ = webSocket('ws://192.168.22.66:4133/ws/userdev/'); // Replace with your WebSocket server URL
+ 
+    this.socket$.subscribe(
+      message => this.messagesSubject.next(message),
+      error => console.error('WebSocket error:', error),
+      () => console.log('WebSocket connection closed')
+    );
   }
 
-  private create(url: string | URL): Rx.Subject<MessageEvent> {
-    let ws = new WebSocket(url);
+  sendMessage(message: any): void {
+    this.socket$.next( String(message) );
+  }
 
-    let observable = Rx.Observable.create((obs: Rx.Observer<MessageEvent>) => {
-      ws.onmessage = obs.next.bind(obs);
-      ws.onerror = obs.error.bind(obs);
-      ws.onclose = obs.complete.bind(obs);
-      return ws.close.bind(ws);
-    });
-    let observer = {
-      next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    };
-    return Rx.Subject.create(observer, observable);
+  getMessage(): Observable<any> {
+    return this.messagesSubject.asObservable();
   }
 }
+
+
+
+//import { Socket, SocketIoConfig } from 'ngx-socket-io';
+//import io from 'socket.io-client';
+
+/*
+const config: SocketIoConfig = { 
+  url: 'ws://db.irocn.com:4133', 
+  options: {
+      path: "/ws/user",
+      reconnection: true,
+      transports: ['websocket'],
+      autoConnect: true
+  } 
+};
+*/
+/*
+@Injectable({
+  providedIn: 'root'
+})
+export class WebsocketService {
+
+  private socket;
+
+  constructor() { 
+    this.socket = io('ws://db.irocn.com:4133');
+  }
+
+  sendMessage(message: string) {
+    return this.socket.emit('message');
+  }
+
+
+  socket = new Socket(config)
+
+  connect() {
+    console.log('to connet .....');
+    this.socket.connect();
+  }
+
+  sendMessage(message: string) {
+    console.log(`send msg to server ${message}`);
+    this.socket.emit(message);
+  }
+
+  onMessage() {
+    return this.socket.fromEvent('message');
+  }
+
+  disconnect() {
+    this.socket.disconnect();
+  }
+  
+}
+*/

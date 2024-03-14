@@ -1,10 +1,16 @@
+<style>
+  .scrollable-div {
+    overflow-y: auto; /* Enable vertical scrollbar */
+    height: calc(90vh - 90px); /* Calculate height to take up remaining space */
+  }
+</style>
 <div class="container">
-    <div class="d-flex flex-column justify-content-center align-items-center" style="margin-top: 20px;">
+    <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="isVisible" style="margin-top: 20px;">
         <img class="justify-content-center" src="../../assets/chatgpt.webp" style="width: 64px;">
         <h4 style="margin-top: 20px;">How can I help you today?</h4>
     </div>
-
-    <div class="row row-cols-1 row-cols-sm-2 g-4" style="margin-top: 60px;">
+    <!-- msgboard -->
+    <div class="row row-cols-1 row-cols-sm-2 g-4 " *ngIf="isVisible" style="margin-top: 60px; margin-left: 60px; margin-right: 60px;">
         <div class="col d-flex flex-column gap-2">
           <h5 class="fw-semibold mb-0 text-body-emphasis">Compare business strategies</h5>
           <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -23,6 +29,16 @@
         <div class="col d-flex flex-column gap-2">
           <h5 class="fw-semibold mb-0 text-body-emphasis">More Usage ..</h5>
           <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
+        </div>
+      </div>
+      <!-- Conversation list -->
+      <div class="row" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
+        <div class="col">
+          <div class="scrollable-div">
+            <div class="scroll-content">
+              <p *ngFor="let message of receivedMessage">{{ decodemsg(message.body) | json }}</p>
+            </div>
+          </div>
         </div>
       </div>
 </div>

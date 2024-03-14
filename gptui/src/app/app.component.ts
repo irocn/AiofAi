@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
-import { WebsocketService } from "./websocket.service";
-import { ChatService } from "./chat.service";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { MsgbodyComponent } from "./msgbody/msgbody.component";
 import { InputmsgboxComponent } from "./inputmsgbox/inputmsgbox.component";
-
+import { WebSocketService } from "./websocket.service";
 
 @Component({
   selector: 'app-root',
@@ -14,27 +11,28 @@ import { InputmsgboxComponent } from "./inputmsgbox/inputmsgbox.component";
   imports: [RouterOutlet, SidebarComponent, MsgbodyComponent, InputmsgboxComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [WebsocketService, ChatService],
+  providers: [WebSocketService],
 })
 export class AppComponent {
   title = 'Hello Gpt!';
 
-  constructor(private chatService: ChatService) {
-    chatService.messages.subscribe(msg => {
-      console.log("Response from websocket: " + msg);
-    });
+  message: string = '';
+
+  constructor(private websocketService: WebSocketService) {}
+/*
+  sendMessage() {
+    this.websocketService.sendMessage(this.message);
+    this.message = '';
   }
 
-  private message = {
-    author: "tutorialedge",
-    msg: "hello"
-  };
-
-  sendMsg() {
-    console.log("new message from client to websocket: ", this.message);
-    this.chatService.messages.next(this.message);
-    this.message.msg = "";
+  ngOnInit() {
+    console.log("websocket to connect server");
+    this.websocketService.connect();
   }
-  
+
+  ngOnDestroy() {
+    this.websocketService.disconnect();
+  }
+  */
 }
 
