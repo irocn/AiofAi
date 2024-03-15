@@ -19,8 +19,8 @@ then open http://localhost:4200/
 
 3. How to run server
 firstly, compile the frontend
-1) cd gptui
-2) ng build //to build the frontend
+- cd gptui
+-  ng build //to build the frontend
 second, run the server with frontend
 ```
 rust run 
