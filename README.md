@@ -4,7 +4,7 @@
 ## Architecture
 1. Server
    - use rust to develop
-2. Frontend
+2. Frontend (angular 17)
    - use angular framework to develop
 ## How to run
 1. Clone project
