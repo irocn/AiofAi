@@ -195,7 +195,7 @@ impl Handler<ClientMessage> for ChatServer {
 
         if msg.room == "chatgpt".to_string() {
             println!("send chatgpt msg to user");
-            self.send_message("userdev", msg.msg.as_str(), 0);
+            self.send_message("usertest", msg.msg.as_str(), 0);
         }
     }
 }

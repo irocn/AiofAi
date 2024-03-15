@@ -76,7 +76,7 @@ async fn main() -> std::io::Result<()> {
     // start chat server actor
     let server = server::ChatServer::new(app_state.clone()).start();
 
-    log::info!("starting HTTP server at http://localhost:8080");
+    log::info!("starting HTTP server at http://0.0.0.0:4133");
 
     HttpServer::new(move || {
         let cors = Cors::default()

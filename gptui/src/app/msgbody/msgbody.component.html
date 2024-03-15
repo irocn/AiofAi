@@ -32,11 +32,15 @@
         </div>
       </div>
       <!-- Conversation list -->
-      <div class="row" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
+      <div class="row" *ngIf="!isVisible" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
         <div class="col">
           <div class="scrollable-div">
             <div class="scroll-content">
-              <p *ngFor="let message of receivedMessage">{{ decodemsg(message.body) | json }}</p>
+              <!-- <p *ngFor="let message of receivedMessage">{{ decodemsg(message.body) | json }}</p> -->
+              <div *ngFor="let message of receivedMessages | keyvalue">
+                <h3>{{ message.key }} </h3>
+                <p>{{ message.value | json }}</p>
+              </div>
             </div>
           </div>
         </div>

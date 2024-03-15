@@ -11,7 +11,7 @@ export class WebSocketService {
 
   constructor() {
 
-    this.socket$ = webSocket('ws://192.168.22.66:4133/ws/userdev/'); // Replace with your WebSocket server URL
+    this.socket$ = webSocket('ws://db.irocn.com:4133/ws/usertest/'); // Replace with your WebSocket server URL
  
     this.socket$.subscribe(
       message => this.messagesSubject.next(message),
