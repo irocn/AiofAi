@@ -16,7 +16,6 @@ export class InputmsgboxComponent {
   constructor(private websocket: WebSocketService) {}
 
   sendMessage() {
-    console.log(`send msg ${this.message}`);
     this.websocket.sendMessage(this.message);
   }
 

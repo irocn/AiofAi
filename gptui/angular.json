@@ -36,11 +36,24 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/bootstrap/scss/bootstrap.scss"
+              "./node_modules/bootstrap/scss/bootstrap.scss",
+              "./node_modules/prismjs/themes/prism-okaidia.css",
+              "./node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
+              "./node_modules/prismjs/plugins/command-line/prism-command-line.css",
+              "./node_modules/katex/dist/katex.min.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "./node_modules/prismjs/prism.js",
+              "./node_modules/prismjs/components/prism-csharp.min.js",
+              "./node_modules/prismjs/components/prism-css.min.js",
+              "./node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "./node_modules/prismjs/plugins/command-line/prism-command-line.js",
+              "./node_modules/emoji-toolkit/lib/js/joypixels.min.js",
+              "./node_modules/katex/dist/katex.min.js",
+              "./node_modules/katex/dist/contrib/auto-render.min.js",
+              "./node_modules/clipboard/dist/clipboard.min.js",
               "./src/assets/color-modes.js"
             ]
           },
@@ -50,7 +63,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",

@@ -8,6 +8,7 @@
     <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="isVisible" style="margin-top: 20px;">
         <img class="justify-content-center" src="../../assets/chatgpt.webp" style="width: 64px;">
         <h4 style="margin-top: 20px;">How can I help you today?</h4>
+        <p>version:0.0.3</p>
     </div>
     <!-- msgboard -->
     <div class="row row-cols-1 row-cols-sm-2 g-4 " *ngIf="isVisible" style="margin-top: 60px; margin-left: 60px; margin-right: 60px;">
@@ -36,13 +37,20 @@
         <div class="col">
           <div class="scrollable-div">
             <div class="scroll-content">
-              <!-- <p *ngFor="let message of receivedMessage">{{ decodemsg(message.body) | json }}</p> -->
+              <h3>{{ title }}</h3>
               <div *ngFor="let message of receivedMessages | keyvalue">
-                <h3>{{ message.key }} </h3>
-                <p>{{ message.value | json }}</p>
+                <markdown [data]="message.value" />
               </div>
             </div>
           </div>
         </div>
       </div>
 </div>
+
+<!--
+
+  <markdown
+  [data]="markdown"
+  (ready)="onReady()">
+</markdown>
+-->
