@@ -39,8 +39,9 @@ export class MsgbodyComponent {
           if ( _json.type !== undefined ){
             this.title = _json.title;
           }else if ( _json.message !== undefined ) {
-            console.log(_json.conversation_id);
-            this.receivedMessages[_json.conversation_id] = _json.message.content.parts;
+            //for ( let item in _json.message.content.parts){
+              this.receivedMessages[_json.message.create_time] = _json.message.content.parts[0];
+            //}
           }
         }
       },
