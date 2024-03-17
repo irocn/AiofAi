@@ -6,11 +6,15 @@
         }
 
         .fixed-input {
-            position: fixed;
-            bottom: 60px;
-            width: 60%;
+            width: 80%;
             padding: 10px;
             /* Adjust as needed */
+        }
+
+        @media (max-width: 992px) {
+            .fixed-input {
+                width: 85%;
+            }
         }
 
         /* Remove focus effect from input */
@@ -20,9 +24,11 @@
         }
     </style>
 </head>
-<div class="row">
-    <div class="parent-div p-3 fixed-bottom d-flex justify-content-center align-items-center">
-        <!-- Your content here -->
-        <input type="text" class="form-control fixed-input" [(ngModel)]="message" (keyup.enter)="sendMessage()" placeholder="Chat with Gpt ..."/>
+<div class="container pt-2 md:pt-0">
+    <div class="container text-center" style="position:fixed;bottom: 10px;">
+        <input type="text" class="fixed-input form-control rounded" style="display: unset !important;" [(ngModel)]="message" (keyup.enter)="sendMessage()" placeholder="Chat with Gpt ..."/>
+        <footer class="footer mt-auto py-3">
+            <span class="text-center fw-lighter fs-6">&copy; 2024 Your Company. All rights reserved.</span>
+        </footer>
     </div>
 </div>

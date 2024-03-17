@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from "../websocket.service";
 import { provideMarkdown } from 'ngx-markdown';
 import { MarkdownModule } from 'ngx-markdown';
+
 
 @Component({
   selector: 'app-msgbody',
@@ -12,9 +13,10 @@ import { MarkdownModule } from 'ngx-markdown';
   styleUrl: './msgbody.component.scss',
   providers: [provideMarkdown()],
 })
-export class MsgbodyComponent {
+export class MsgbodyComponent   implements AfterViewInit{
   isVisible: boolean = true;
-
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
+  
   // Conversion variable
   receivedMessages:{[conversation_id: string]:string} = {};
   markdown = ``;
@@ -24,6 +26,12 @@ export class MsgbodyComponent {
   title: string = "";
 
   constructor(private WebSocketService: WebSocketService) {}
+
+  ngAfterViewInit(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch(err) { }
+  }
 
   ngOnInit(): void {
     this.WebSocketService.getMessage().subscribe(
@@ -72,52 +80,5 @@ export class MsgbodyComponent {
     );
   }
 
-  decodemsg(msg:any){
-    if ( msg === undefined ){
-      return;
-    }
-    
-    let _base64_decode:string = atob(msg.body);
 
-    if (_base64_decode.startsWith('data: [DONE]')){
-      return;
-    }
-
-    if (_base64_decode.startsWith('data: {"type"')){
-      return;
-    }
-
-    if (_base64_decode.startsWith('data: {"message"')){
-      let _json = JSON.parse(_base64_decode.substring(5));
-      let _content:string = _json["message"]["content"]["parts"];
-      if ( _content.length != 0 ){
-        return _content;
-      }
-    }
-    return;
-  }
-
-  onReady(){}
-  /*
-  decodemsg(msg:any){
-    let _base64_decode:string =  atob(msg);
-
-    if (_base64_decode.startsWith('data: [DONE]')){
-      return;
-    }
-
-    if (_base64_decode.startsWith('data: {"type"')){
-      return;
-    }
-
-    if (_base64_decode.startsWith('data: {"message"')){
-      let _json = JSON.parse(_base64_decode.substring(5));
-      let _content:string = _json["message"]["content"]["parts"];
-      if ( _content.length != 0 ){
-        return _content;
-      }
-    }
-    return    
-  }
-  */
 }

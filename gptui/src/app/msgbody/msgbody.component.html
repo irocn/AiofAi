@@ -3,6 +3,18 @@
     overflow-y: auto; /* Enable vertical scrollbar */
     height: calc(90vh - 90px); /* Calculate height to take up remaining space */
   }
+  .msgboard{
+    margin-top: 60px; 
+    margin-left: 60px; 
+    margin-right: 60px;
+  }
+  @media (max-width: 992px) {
+    .msgboard{
+    margin-top: 60px; 
+    margin-left: 6px; 
+    margin-right: 6px;
+    }
+  }
 </style>
 <div class="container">
     <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="isVisible" style="margin-top: 20px;">
@@ -11,7 +23,7 @@
         <p>version:0.0.3</p>
     </div>
     <!-- msgboard -->
-    <div class="row row-cols-1 row-cols-sm-2 g-4 " *ngIf="isVisible" style="margin-top: 60px; margin-left: 60px; margin-right: 60px;">
+    <div class="row row-cols-1 row-cols-sm-2 g-4 msgboard" *ngIf="isVisible">
         <div class="col d-flex flex-column gap-2">
           <h5 class="fw-semibold mb-0 text-body-emphasis">Compare business strategies</h5>
           <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -36,7 +48,7 @@
       <div class="row" *ngIf="!isVisible" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
         <div class="col">
           <div class="scrollable-div">
-            <div class="scroll-content">
+            <div class="scroll-content" #messageContainer>
               <h3>{{ title }}</h3>
               <div *ngFor="let message of receivedMessages | keyvalue">
                 <markdown [data]="message.value" />
@@ -46,11 +58,3 @@
         </div>
       </div>
 </div>
-
-<!--
-
-  <markdown
-  [data]="markdown"
-  (ready)="onReady()">
-</markdown>
--->
