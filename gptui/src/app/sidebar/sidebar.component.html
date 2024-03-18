@@ -1,6 +1,12 @@
 <style>
-  .sidebar {
-  transition: transform 0.3s ease;
+.sidebar {
+    min-width: 270px;
+    max-width: 270px;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    position: relative;
+    height: 100%;
   }
 
   .sidebar.show {
@@ -8,82 +14,151 @@
   }
 
   .sidebar.close {
-    margin-left: -240px;
+    margin-left: -270px;
     transition:0.3s all ease-in-out;
   }
 
-  /* Hide sidebar on smaller screens */
+  .custom-menu {
+    position: fixed;
+    top: 2px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+  }
+  .custom-menu .btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .sidebar-content {
+      overflow-y: auto; /* Enable vertical scrollbar */
+      max-height: calc(100vh - 56px - 56px); /* Subtract header and footer height */
+    }
+    /* Transparent scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(113, 102, 102, 0.5); /* Semi-transparent white */
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent; /* Transparent background */
+    }
+  
+    /* Hide sidebar on smaller screens */
   @media (max-width: 992px) {
     .sidebar {
-      display: none;
+      display: none ;
     }
   }
-  
-  .b-vr {
-    flex-shrink: 0;
-    width: 0.1rem;
-    height: 100vh;
-    border: solid rgba(0, 0, 0, .15);
-    border-width: 1px 0;
-    background-color: rgba(0, 0, 0, .1);
-  }
-
-  .bi {
-    vertical-align: -.125em;
-    fill: currentColor;
-  }
 </style>
-<nav class="d-flex flex-nowrap">
-<div class="list-group list-group-flush scrollarea sidebar" [ngClass]="{'close': isSidebarOpen}" style="width: 240px;">
-  <div class="d-flex justify-content-center">
-    <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
-      <span class="fs-5 fw-semibold align-text-bottom" style="margin-top:10px">AI's AI</span>
-    </a>
-  </div>
-  <hr>
-  <ul class="nav nav-pills flex-column mb-auto">
-    <li class="nav-item">
-      <a href="#" class="nav-link link-body-emphasis" aria-current="page">
-        New Chat
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-md">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M16.7929 2.79289C18.0118 1.57394 19.9882 1.57394 21.2071 2.79289C22.4261 4.01184 22.4261 5.98815 21.2071 7.20711L12.7071 15.7071C12.5196 15.8946 12.2652 16 12 16H9C8.44772 16 8 15.5523 8 15V12C8 11.7348 8.10536 11.4804 8.29289 11.2929L16.7929 2.79289ZM19.7929 4.20711C19.355 3.7692 18.645 3.7692 18.2071 4.2071L10 12.4142V14H11.5858L19.7929 5.79289C20.2308 5.35499 20.2308 4.64501 19.7929 4.20711ZM6 5C5.44772 5 5 5.44771 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V14C19 13.4477 19.4477 13 20 13C20.5523 13 21 13.4477 21 14V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34314 4.34315 3 6 3H10C10.5523 3 11 3.44771 11 4C11 4.55228 10.5523 5 10 5H6Z"
-            fill="currentColor"></path>
-        </svg>
-      </a>
-    </li>
-  </ul>
-  <hr>
-  <div class="dropdown">
-    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-      data-bs-toggle="dropdown" aria-expanded="false">
-      <img
-        src="https://s.gravatar.com/avatar/42bcfc820ac198d99ed6c2ebfcdee42b?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fha.png"
-        alt="" width="32" height="32" class="rounded-circle me-2">
-      <strong>Haogle</strong>
-    </a>
-    <ul class="dropdown-menu text-small shadow">
-      <li><a class="dropdown-item" href="#">New project...</a></li>
-      <li><a class="dropdown-item" href="#">Settings</a></li>
-      <li><a class="dropdown-item" href="#">Profile</a></li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li><a class="dropdown-item" href="#">Sign out</a></li>
-    </ul>
-  </div>
-</div>
-<div class="d-flex b-divider b-vr justify-content-center align-items-center">
-  <button (click)="toggleSidebar()">
-    <span class="" data-state="closed">
-      <div class="flex h-[72px] w-8 items-center justify-center">
-        <div class="flex h-6 w-6 flex-col items-center">
-          <div class="h-3 w-1 rounded-full" style="background: var(--text-tertiary); transform: translateY(0.15rem) rotate(15deg) translateZ(0px);"></div>
-          <div class="h-3 w-1 rounded-full" style="background: var(--text-tertiary); transform: translateY(-0.15rem) rotate(-15deg) translateZ(0px);"></div>
-        </div>
+<nav class="flex-column h-100 sidebar" [ngStyle]="{ 'display': isSidebarOpen ? 'block' : 'none' }">
+  <div class="flex-column h-100">
+    <header class="p-3 text-center">AiofAi</header>
+    <div class="p-2 sidebar-content">
+      <ul class="nav nav-pills flex-column" style="text-align:center; position:fixed;margin-left: 80px;">
+        <li class="nav-item">
+          <a href="#" class="nav-link link-body-emphasis" aria-current="page">
+            New Chat
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-md">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M16.7929 2.79289C18.0118 1.57394 19.9882 1.57394 21.2071 2.79289C22.4261 4.01184 22.4261 5.98815 21.2071 7.20711L12.7071 15.7071C12.5196 15.8946 12.2652 16 12 16H9C8.44772 16 8 15.5523 8 15V12C8 11.7348 8.10536 11.4804 8.29289 11.2929L16.7929 2.79289ZM19.7929 4.20711C19.355 3.7692 18.645 3.7692 18.2071 4.2071L10 12.4142V14H11.5858L19.7929 5.79289C20.2308 5.35499 20.2308 4.64501 19.7929 4.20711ZM6 5C5.44772 5 5 5.44771 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V14C19 13.4477 19.4477 13 20 13C20.5523 13 21 13.4477 21 14V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34314 4.34315 3 6 3H10C10.5523 3 11 3.44771 11 4C11 4.55228 10.5523 5 10 5H6Z"
+                fill="currentColor"></path>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+        <li>1</li>
+      </ul>
+    </div>
+    <footer class="p-3">
+      <div class="dropdown">
+        <a href="#" class="align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img
+            src="https://s.gravatar.com/avatar/42bcfc820ac198d99ed6c2ebfcdee42b?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fha.png"
+            alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>Haogle</strong>
+        </a>
+        <ul class="dropdown-menu text-small shadow">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
       </div>
-      <span style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;">打开侧边栏</span>
-    </span>
+    </footer>
+  </div>
+</nav>
+<div class="custom-menu">
+  <button (click)="toggleSidebar()" [ngStyle]="{ 'margin-left': isSidebarOpen ? ' 260px' : '1px' }" class="btn">
+    <i class="bi bi-text-indent-right" width="1em" height="1em"></i>
   </button>
 </div>
-</nav>

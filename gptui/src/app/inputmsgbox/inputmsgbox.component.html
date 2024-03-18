@@ -1,19 +1,18 @@
 <head>
     <style>
-        /* Custom CSS to fix input box at the bottom */
-        .parent-div {
-            position: relative;
-        }
-
         .fixed-input {
             width: 80%;
             padding: 10px;
-            /* Adjust as needed */
+            display: unset !important;
         }
 
         @media (max-width: 992px) {
             .fixed-input {
                 width: 85%;
+                display: block !important;
+            }
+            .footer{
+                display: none;
             }
         }
 
@@ -24,11 +23,11 @@
         }
     </style>
 </head>
-<div class="container pt-2 md:pt-0">
+<div class="container">
     <div class="container text-center" style="position:fixed;bottom: 10px;">
-        <input type="text" class="fixed-input form-control rounded" style="display: unset !important;" [(ngModel)]="message" (keyup.enter)="sendMessage()" placeholder="Chat with Gpt ..."/>
+        <input type="text" class="fixed-input form-control rounded" [(ngModel)]="message" (keyup.enter)="sendMessage()" placeholder="Chat with Gpt ..."/>
         <footer class="footer mt-auto py-3">
-            <span class="text-center fw-lighter fs-6">&copy; 2024 Your Company. All rights reserved.</span>
+            <small class="text-center fw-lighter">&copy; 2024 Your Company. All rights reserved.</small>
         </footer>
     </div>
 </div>
