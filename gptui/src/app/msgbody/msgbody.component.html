@@ -15,12 +15,25 @@
     margin-right: 6px;
     }
   }
+    /* Transparent scrollbar */
+    ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(113, 102, 102, 0.5); /* Semi-transparent white */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Transparent background */
+  }
 </style>
 <div class="container">
     <div class="d-flex flex-column justify-content-center align-items-center" *ngIf="isVisible" style="margin-top: 20px;">
-        <img class="justify-content-center" src="../../assets/chatgpt.webp" style="width: 64px;">
+        <img class="justify-content-center" src="../../assets/chatgpt-logo.png" style="width: 64px;">
         <h4 style="margin-top: 20px;">How can I help you today?</h4>
-        <p>version:0.0.4</p>
+        <p>version:0.0.5</p>
     </div>
     <!-- msgboard -->
     <div class="row row-cols-1 row-cols-sm-2 g-4 msgboard" *ngIf="isVisible">
@@ -44,6 +57,11 @@
           <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
         </div>
       </div>
+      <div class="text-center blockquote-footers" style="margin-top: 100px;" *ngIf="isVisible">
+        <blockquote class="blockquote text-center">
+          <p class="mb-0" style="color: rgb(247, 105, 3);">Disclaimer: This is not the real ChatGPT, but a wrapper using ChatGPT API ! </p>
+        </blockquote>
+      </div>
       <!-- Conversation list -->
       <div class="row" *ngIf="!isVisible" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
         <div class="col">
@@ -57,4 +75,11 @@
           </div>
         </div>
       </div>
+      <!--
+      <ul>
+        <li [class.active]="isRouteSelected('/help')">help</li>
+        <li [class.active]="isRouteSelected('/settings')">settings</li>
+        <li [class.active]="isRouteSelected('/login')">login</li>
+      </ul>
+      -->
 </div>

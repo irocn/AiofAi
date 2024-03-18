@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { WebSocketService } from "../websocket.service";
 import { provideMarkdown } from 'ngx-markdown';
 import { MarkdownModule } from 'ngx-markdown';
+import { EventsService } from '../events.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { MarkdownModule } from 'ngx-markdown';
   styleUrl: './msgbody.component.scss',
   providers: [provideMarkdown()],
 })
-export class MsgbodyComponent   implements AfterViewInit{
+export class MsgbodyComponent implements AfterViewInit{
   isVisible: boolean = true;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   
@@ -24,13 +25,10 @@ export class MsgbodyComponent   implements AfterViewInit{
 
   // Message
   title: string = "";
-
-  constructor(private WebSocketService: WebSocketService) {}
+  constructor(private WebSocketService: WebSocketService, private eventService: EventsService) {}
 
   ngAfterViewInit(): void {
-    try {
-      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+    //this.eventService.sendEvent('msgbox');
   }
 
   ngOnInit(): void {

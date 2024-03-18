@@ -20,10 +20,7 @@
 
   .custom-menu {
     position: fixed;
-    top: 2px;
-    -webkit-transition: .3s;
-    -o-transition: .3s;
-    transition: .3s;
+    top: 50px;
   }
   .custom-menu .btn {
     width: 50px;
@@ -32,7 +29,7 @@
   }
   .sidebar-content {
       overflow-y: auto; /* Enable vertical scrollbar */
-      max-height: calc(100vh - 56px - 56px); /* Subtract header and footer height */
+      max-height: calc(100vh - 70px - 58px); /* Subtract header and footer height */
     }
     /* Transparent scrollbar */
     ::-webkit-scrollbar {
@@ -57,7 +54,11 @@
 </style>
 <nav class="flex-column h-100 sidebar" [ngStyle]="{ 'display': isSidebarOpen ? 'block' : 'none' }">
   <div class="flex-column h-100">
-    <header class="p-3 text-center">AiofAi</header>
+    <header class="p-3 text-center">
+      <a routerLink="msgbox" (click)="sendEvent('msgbox')">
+        <img src="../../assets/chatgpt-logo.png" width="32px">
+      </a>
+    </header>
     <div class="p-2 sidebar-content">
       <ul class="nav nav-pills flex-column" style="text-align:center; position:fixed;margin-left: 80px;">
         <li class="nav-item">
@@ -140,18 +141,18 @@
         <a href="#" class="align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown" aria-expanded="false">
           <img
-            src="https://s.gravatar.com/avatar/42bcfc820ac198d99ed6c2ebfcdee42b?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fha.png"
+            src="../../assets/chatgpt-logo.png"
             alt="" width="32" height="32" class="rounded-circle me-2">
-          <strong>Haogle</strong>
+          <small>Haogle</small>
         </a>
         <ul class="dropdown-menu text-small shadow">
-          <li><a class="dropdown-item" href="#">New project...</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a routerLink="settings" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('settings')"><i class="bi bi-gear"></i> Settings</a></li>
+          <li><a routerLink="help" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('help')"><i class="bi bi-question-circle"></i> Help</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
+          <!--<i class="bi bi-box-arrow-right"></i>-->
+          <li><a routerLink="login" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('login')"><i class="bi bi-box-arrow-in-left"></i> Login</a></li>
         </ul>
       </div>
     </footer>
@@ -159,6 +160,6 @@
 </nav>
 <div class="custom-menu">
   <button (click)="toggleSidebar()" [ngStyle]="{ 'margin-left': isSidebarOpen ? ' 260px' : '1px' }" class="btn">
-    <i class="bi bi-text-indent-right" width="1em" height="1em"></i>
+    <i class="bi bi-grid-3x3-gap" width="1em" height="1em"></i>
   </button>
 </div>
