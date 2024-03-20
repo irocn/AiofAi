@@ -52,12 +52,36 @@
   <!-- sidebar -->
   <app-sidebar></app-sidebar>
   <div class="col py-3 ms-3 me-3">
-    <!-- msgbody -->
-    <div class="row">
+    <!-- site info -->
+    <div class="row" *ngIf="toDisplayComponent === 'siteinfo'">
       <app-bodycontainer></app-bodycontainer>
     </div>
+    <!-- help -->
+    <div class="row" *ngIf="toDisplayComponent === 'help'">
+      <app-helpme></app-helpme>
+    </div>
+    <!-- login -->
+    <div class="row" *ngIf="toDisplayComponent === 'login'">
+      <app-login></app-login>
+    </div>
+    <!-- loginout -->
+    <div class="row" *ngIf="toDisplayComponent === 'logout'">
+      <app-logout></app-logout>
+    </div>
+    <!-- setting -->
+    <div class="row" *ngIf="toDisplayComponent === 'setting'">
+      <app-setting></app-setting>
+    </div>
+    <!-- chat -->
+    <div class="row" *ngIf="toDisplayComponent === 'chat'">
+      <app-msgbody></app-msgbody>
+    </div>
+    <!-- subscribe -->
+    <div class="row" *ngIf="toDisplayComponent === 'subscribe'">
+      <app-subscribe></app-subscribe>
+    </div>    
     <!-- inputbox -->
-    <div class="row">
+    <div class="row" >
       <app-inputmsgbox></app-inputmsgbox>
     </div>
   </div>

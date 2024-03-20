@@ -15,9 +15,9 @@ import { EventsService } from '../events.service';
   providers: [provideMarkdown()],
 })
 export class MsgbodyComponent implements AfterViewInit{
-  isVisible: boolean = true;
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
-  
+
+
   // Conversion variable
   receivedMessages:{[conversation_id: string]:string} = {};
   markdown = ``;
@@ -28,14 +28,16 @@ export class MsgbodyComponent implements AfterViewInit{
   constructor(private WebSocketService: WebSocketService, private eventService: EventsService) {}
 
   ngAfterViewInit(): void {
-    //this.eventService.sendEvent('msgbox');
+    this.eventService.sendEvent('msgbox');
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
   ngOnInit(): void {
     this.WebSocketService.getMessage().subscribe(
       message => {
         // When have message received to don't display the messagboard
-        this.isVisible = false;
 
         // Handle the message received
         // 1. base64 decode
@@ -77,6 +79,4 @@ export class MsgbodyComponent implements AfterViewInit{
       error => console.error('Error receiving message:', error)
     );
   }
-
-
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from "../websocket.service";
+import { EventsService } from '../events.service';
 
 @Component({
   selector: 'app-inputmsgbox',
@@ -12,10 +13,16 @@ import { WebSocketService } from "../websocket.service";
 })
 export class InputmsgboxComponent {
   message: String = '';
+  startChat: boolean = false;
 
-  constructor(private websocket: WebSocketService) {}
+  constructor(private websocket: WebSocketService, private eventService: EventsService) {}
 
   sendMessage() {
+    if ( this.startChat == false){
+      this.eventService.sendEvent('chat');
+      this.startChat = true;
+
+    }
     this.websocket.sendMessage(this.message);
   }
 
