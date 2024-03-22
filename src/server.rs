@@ -12,7 +12,10 @@ use std::{
 
 use actix::prelude::*;
 use rand::{rngs::ThreadRng, Rng};
-
+use serde_json::Value;
+use sled::Db;
+use crate::db;
+use uuid::Uuid;
 /// Chat server sends this messages to session
 #[derive(Message)]
 #[rtype(result = "()")]
@@ -85,25 +88,25 @@ pub struct ChatServer {
     pub rooms: HashMap<String, HashSet<usize>>,
     rng: ThreadRng,
     visitor_count: Arc<AtomicUsize>,
+    db: sled::Db
 }
 
 impl ChatServer {
     pub fn new(visitor_count: Arc<AtomicUsize>) -> ChatServer {
+        // init db to save information
+        let _db = sled::open("chatDB").unwrap();
+
         ChatServer {
             sessions: HashMap::new(),
             rooms:HashMap::new(),
             rng: rand::thread_rng(),
             visitor_count,
+            db: _db,
         }
     }
 }
 
 impl ChatServer {
-    ///
-    /// 
-    fn send_message_x(&self, _clientid: &str, _msg: &str){
-        println!("send message x");
-    }
     /// Send message to all users in the room
     fn send_message(&self, room: &str, message: &str, skip_id: usize) {
         println!("send msg from room:{}, msg:{}", room, message);
@@ -186,16 +189,44 @@ impl Handler<ClientMessage> for ChatServer {
 
     fn handle(&mut self, msg: ClientMessage, _: &mut Context<Self>) {
 
-        println!("client msg:{:?}", msg);
+        // Save user chat request
+        println!("current client msg is, id:{},msg:{},room:{}", msg.id, msg.msg, msg.room);
+ 
+        // for personal history
+        let mut _tree = self.db.open_tree(&msg.room).unwrap();
+        let _out = _tree.insert(&msg.room, msg.msg.as_bytes()).unwrap().unwrap();
 
-        if msg.room != "chatgpt".to_string() {
-            println!("send user msg to chatgpt");
-            self.send_message("chatgpt", msg.msg.as_str(),0);
+        // Handle client chat request
+        if msg.room != "chatgpt" {
+            
+            // generate message id
+            let uuid = Uuid::new_v4();
+            let uuid_string = uuid.hyphenated().to_string();
+            let _json_msg = format!(r#"{{
+                                        "msgid":{},
+                                        "msg":{}
+                                    }}
+                                    "#, uuid_string, &msg.msg);
+            // to record message id to submit to chatgpt
+            _tree = self.db.open_tree("chatgpt").unwrap();
+            _tree.insert(uuid_string, msg.room.as_bytes()).unwrap().unwrap();
+
+            // send message to chatgpt
+            self.send_message("chatgpt", &_json_msg, 0);
         }
 
-        if msg.room == "chatgpt".to_string() {
-            println!("send chatgpt msg to user");
-            self.send_message("usertest", msg.msg.as_str(), 0);
+        // Handle chatgpt response
+        if msg.room == "chatgpt" {
+            // open tree
+            _tree = self.db.open_tree("chatgpt").unwrap();
+            // to find userid by message_id
+            let _json_msg:Value = serde_json::from_str(&msg.msg.as_str()).unwrap();
+            let _key = _json_msg["message"].to_string();
+            let mut _userid = _tree.get(&_key).unwrap().unwrap();
+            let __userid = String::from_utf8_lossy(&_userid);
+
+            // to send msg to this userid
+            self.send_message(&__userid, &msg.msg.as_str(), 0);
         }
     }
 }
@@ -246,6 +277,6 @@ impl Handler<ServerMessageX> for ChatServer {
     type Result = ();
 
     fn handle(&mut self, msg: ServerMessageX, _: &mut Context<Self>) {
-        self.send_message_x(&msg.client_id, msg.msg.as_str());
+        
     }
 }

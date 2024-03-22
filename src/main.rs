@@ -19,32 +19,16 @@ use crate::server::ServerMessageX;
 
 mod server;
 mod session;
+mod db;
 
 
 async fn index() -> impl Responder {
     NamedFile::open_async("./gptui/dist/gptui/browser/index.html").await.unwrap()
 }
 
-async fn ask_question(req:HttpRequest, _json:web::Json<Value>, srv: web::Data<Addr<server::ChatServer>>) -> impl Responder {
-    let client_id = req.match_info().get("client_id").unwrap();
-    println!("The requested client_id is:{}", client_id);
-    println!("The request body:{}", _json);
-
-    let msg = ServerMessageX{ client_id: client_id.to_owned(), msg: _json.to_string()  };
-
-    // Message handle based message type
-    let _ = srv.get_ref().clone().try_send(msg);
-
-    web::Json(())
-}
-
 /// Entry point for our websocket route
 async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<server::ChatServer>>) -> Result<HttpResponse, Error> {
     let client_id = req.match_info().get("client_id").unwrap();
-
-    let _srv = srv.get_ref().clone();
-
-    println!("Hello: {}", client_id);
 
     ws::start(
         session::WsChatSession {
@@ -60,7 +44,11 @@ async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<
 }
 
 /// Displays state
-async fn get_chats(req: HttpRequest) -> impl Responder {
+async fn get_chats(req: HttpRequest, _db: web::Data<sled::Db>) -> impl Responder {
+    //let _user_id = req.match_info().get("client_id").unwrap();
+
+    // query database for user
+
 
     web::Json( 
         [   
@@ -110,11 +98,16 @@ async fn main() -> std::io::Result<()> {
     // start chat server actor
     let server = server::ChatServer::new(app_state.clone()).start();
 
+    // db for chat
+    let _db_: sled::Db = sled::open("chat_db").unwrap();
+
     log::info!("starting HTTP server at http://127.0.0.1:5678");
 
     HttpServer::new(move || {
         let cors = Cors::default()
-        .allowed_origin("http://localhost:4200") // Allow requests from specific origin
+        .allow_any_origin()
+        //.send_wildcard()
+        //.allowed_origin("*") // Allow requests from specific origin
         .allowed_methods(vec!["GET", "POST"])  // Allow specific HTTP methods
         .max_age(3600); 
 
@@ -122,8 +115,8 @@ async fn main() -> std::io::Result<()> {
             .wrap(cors)
             .app_data(web::Data::from(app_state.clone()))
             .app_data(web::Data::new(server.clone()))
+            .app_data(web::Data::new(_db_.clone()))
             .service(web::resource("/").to(index))  //load html 
-            .service(web::resource("/send/{client_id}").to(ask_question))   //send message to client_id
             .route("/chats", web::post().to(get_chats))
             .route("/ws/{client_id}/", web::get().to(chat_route))
             .service(Files::new("/", "./gptui/dist/gptui/browser/"))

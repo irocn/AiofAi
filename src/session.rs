@@ -100,6 +100,7 @@ impl Handler<server::Message> for WsChatSession {
     type Result = ();
 
     fn handle(&mut self, msg: server::Message, ctx: &mut Self::Context) {
+        println!("this msg {}", msg.0);
         ctx.text(msg.0);
     }
 }
@@ -192,8 +193,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                     } else {
                         m.to_owned()
                     };
-                    // send message to chat server
-
+                    // send message to peer by chat server
                     self.addr.do_send(server::ClientMessage {
                         id: self.id,
                         msg,

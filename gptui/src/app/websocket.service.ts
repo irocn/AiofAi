@@ -11,7 +11,7 @@ export class WebSocketService {
 
   constructor() {
 
-    this.socket$ = webSocket('ws://db.irocn.com:4133/ws/usertest/'); // Replace with your WebSocket server URL
+    this.socket$ = webSocket('ws://db.irocn.com:4133/ws/haogle/'); // Replace with your WebSocket server URL
  
     this.socket$.subscribe(
       message => this.messagesSubject.next(message),
@@ -25,6 +25,7 @@ export class WebSocketService {
   }
 
   getMessage(): Observable<any> {
+    console.log("receive msg");
     return this.messagesSubject.asObservable();
   }
 }

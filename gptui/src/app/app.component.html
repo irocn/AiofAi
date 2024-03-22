@@ -47,11 +47,10 @@
       </li>
     </ul>
   </div>
-  <main class="d-flex flex-nowrap">
-
+  <div class="d-flex flex-nowrap">
   <!-- sidebar -->
-  <app-sidebar></app-sidebar>
-  <div class="col py-3 ms-3 me-3">
+  <app-sidebar></app-sidebar>     
+  <div class="col ">
     <!-- site info -->
     <div class="row" *ngIf="toDisplayComponent === 'siteinfo'">
       <app-bodycontainer></app-bodycontainer>
@@ -85,7 +84,7 @@
       <app-inputmsgbox></app-inputmsgbox>
     </div>
   </div>
-  </main>
+</div>
   <script>
     (() => {
       'use strict'
