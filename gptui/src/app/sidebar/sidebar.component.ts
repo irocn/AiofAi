@@ -12,13 +12,21 @@ import { ApiService } from "../api.service";
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit, AfterViewInit{
-  isSidebarOpen = false;
+  isSidebarOpen = true;
+  isLogined = false;
+  email = '';
+  verify_code = '';
+
   chats: any [] = [];
 
-  constructor(private eventService: EventsService, private http: ApiService) {}
+  constructor(private eventService: EventsService, private api: ApiService) {}
+
+  chats_req = {
+    userid: "haogle"
+  };
 
   ngOnInit(): void {    
-    this.http.getChatRecordes().subscribe(
+    this.api.getChatRecordes(this.chats_req).subscribe(
       (data) => {
         console.log(data);
         this.chats = data;
@@ -40,13 +48,34 @@ export class SidebarComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     //this.eventService.sendEvent('msgbox');
   }
-}
-/*
-  private apiUrl = 'https://example.com/api/users'; // 假设服务端 API 的地址为 https://example.com/api/users
 
-  constructor(private http: HttpClient) { }
-
-  getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl); // 发起 GET 请求获取用户数据
+  login(){
+    const payload = {email: this.email, verify_code: this.verify_code};
+    return this.api.login(payload).subscribe(
+      response => {
+        const token = response.data.token;
+        localStorage.setItem('token', token); // save token to local storage
+        return true;
+      },
+      error => {
+        return false;
+      }
+    );
   }
-  */
+
+  logout(){
+    const _token = localStorage.getItem('token');
+    const payload = {token:_token};
+
+    this.api.logout(payload).subscribe(
+      response => {
+        console.log('Logout successful:', response);
+      },
+      error => {
+        console.error('Logout failed:', error);
+      }
+    );
+  }
+
+  
+}

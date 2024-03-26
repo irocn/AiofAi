@@ -1,0 +1,8 @@
+{
+    "/": {
+      "target": "http://db.irocn.com:4133/",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+  

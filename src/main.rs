@@ -9,7 +9,7 @@ use std::{
 use actix::*;
 use actix_files::{Files, NamedFile};
 use actix_web::{
-    middleware::Logger, web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder,
+    http::header, middleware::Logger, web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder
 };
 use actix_web_actors::ws;
 use serde_json::{json, Value};
@@ -44,46 +44,25 @@ async fn chat_route(req: HttpRequest, stream: web::Payload, srv: web::Data<Addr<
 }
 
 /// Displays state
-async fn get_chats(req: HttpRequest, _db: web::Data<sled::Db>) -> impl Responder {
-    //let _user_id = req.match_info().get("client_id").unwrap();
+async fn get_chats(req: HttpRequest, _json: web::Json<Value>, _db: web::Data<sled::Db>) -> impl Responder {
+    
+    let _user_id:&str = &_json["userid"].as_str().unwrap();
+    println!("This login user is {:?}", _user_id);
 
-    // query database for user
 
+    let user_tree = _db.open_tree(_user_id).unwrap();
+
+    let mut _chats:Vec<Value> = Vec::new();
+    let _ = user_tree.iter().rev().all(|x|{
+        _chats.push(json!({
+            "id": format!("{}", String::from_utf8_lossy(x.clone().unwrap().0.as_ref())),
+            "msg": format!("{}", String::from_utf8_lossy(x.clone().unwrap().1.as_ref())).trim_matches('"')
+        }));
+        true
+    });
 
     web::Json( 
-        [   
-            json!({"dev": "hello, siri"}),
-            json!({"dev": "to write a websocket client in rust"}),
-            json!({"dev": "how old are you?"}),
-            json!({"dev": "what is your name"}),
-            json!({"dev": "how old are you?"}),
-            json!({"dev": "what is your name"}),
-            json!({"dev": "where do you go tomorrow?"}),
-            json!({"dev": "help me to design a logo with sunlight"}),
-            json!({"dev": "How many people in China?"}),
-            json!({"dev": "Why do we learn the rust language?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "help me to design a logo with sunlight"}),
-            json!({"dev": "How many people in China?"}),
-            json!({"dev": "Why do we learn the rust language?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "help me to design a logo with sunlight"}),
-            json!({"dev": "How many people in China?"}),
-            json!({"dev": "Why do we learn the rust language?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "help me to design a logo with sunlight"}),
-            json!({"dev": "How many people in China?"}),
-            json!({"dev": "Why do we learn the rust language?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "How many people in China?"}),
-            json!({"dev": "Why do we learn the rust language?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "How far from Shanghai to Beijing?"}),
-            json!({"dev": "help me to design a logo with sunlight"}),
-        ]
+        _chats
     )
 }
 
@@ -95,21 +74,19 @@ async fn main() -> std::io::Result<()> {
     // keep a count of the number of visitors
     let app_state = Arc::new(AtomicUsize::new(0));
 
-    // start chat server actor
-    let server = server::ChatServer::new(app_state.clone()).start();
-
     // db for chat
-    let _db_: sled::Db = sled::open("chat_db").unwrap();
+    let _db_: sled::Db = sled::open("chatDB").unwrap();
 
-    log::info!("starting HTTP server at http://127.0.0.1:5678");
+    // start chat server actor
+    let server = server::ChatServer::new(app_state.clone(), &_db_).start();
 
     HttpServer::new(move || {
         let cors = Cors::default()
         .allow_any_origin()
-        //.send_wildcard()
-        //.allowed_origin("*") // Allow requests from specific origin
-        .allowed_methods(vec!["GET", "POST"])  // Allow specific HTTP methods
-        .max_age(3600); 
+        .allow_any_header()
+        .allow_any_method();
+        //.allowed_methods(vec!["GET", "POST"])  // Allow specific HTTP methods
+        //.max_age(3600); 
 
         App::new()
             .wrap(cors)
@@ -117,7 +94,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(server.clone()))
             .app_data(web::Data::new(_db_.clone()))
             .service(web::resource("/").to(index))  //load html 
-            .route("/chats", web::post().to(get_chats))
+            .route("/chats/", web::post().to(get_chats))
             .route("/ws/{client_id}/", web::get().to(chat_route))
             .service(Files::new("/", "./gptui/dist/gptui/browser/"))
             .wrap(Logger::default())

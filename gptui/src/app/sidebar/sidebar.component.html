@@ -6,19 +6,8 @@
     -o-transition: all .3s;
     transition: all .3s;
     height: 100%;
-   
   }
-
-  .sidebar.show {
-    transition: 0.3s all ease-in-out;
-    /* Show sidebar when the show class is applied */
-  }
-
-  .sidebar.close {
-    margin-left: -270px;
-    transition: 0.3s all ease-in-out;
-  }
-
+  
   .custom-menu .btn {
     margin-top: calc(100vh/2.25);
     position: relative;
@@ -30,7 +19,7 @@
     /* Enable vertical scrollbar */
     overflow-y: auto;
     /* Subtract header and footer height */
-    max-height: calc(100vh - 70px - 58px);
+    max-height: calc(100vh - 70px - 60px);
   }
 
   /* Transparent scrollbar */
@@ -58,7 +47,7 @@
     margin-left: -32px;
     }
   /* Hide sidebar on smaller screens */
-  @media (max-width: 992px) {
+  @media (max-width: 500px) {
     .sidebar {
       display: none;
       z-index: 9999;
@@ -66,13 +55,13 @@
     }
   }
 </style>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col" style="padding-left: 12px;padding-right: 0px;">
-      <nav class="flex-column h-100 sidebar" [ngStyle]="{ 'display': isSidebarOpen ? 'block' : 'none' }">
-        <div class="flex-column h-100">
-          <header class="col-12 d-flex justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline btn-lg" (click)="sendEvent('siteinfo')" style="border: 0px;">
+<div class="container g-0">
+  <div class="row align-items-start g-0">
+    <div class="col-11" [ngStyle]="{ 'display': isSidebarOpen ? 'block' : 'none' }">
+      <nav class="flex-column">
+        <div class="flex-column">
+          <header class="justify-content-center align-items-center">
+            <button type="button" class="btn btn-outline btn-lg" (click)="sendEvent('bodybox')" style="border: 0px;">
               <img src="../../assets/iedux-pro-red.png" width="235px" height="45px">  <!--https://app.logo.com/editor/layouts-->
             </button>
           </header>
@@ -87,7 +76,7 @@
               </li>
             </ul>
             <ul style="margin-top: 40px;list-style: circle;">
-              <li *ngFor="let chat of chats">{{chat.dev}}</li>       
+              <li *ngFor="let chat of chats"><a [href]="'/' + chat.id" style="text-decoration: none;">{{ chat.msg }}</a></li>       
             </ul>
           </div>
           <footer class="p-3 footer" style="position:fixed;bottom: 10px;">
@@ -109,7 +98,7 @@
                   <hr class="dropdown-divider">
                 </li>
                 <!--<i class="bi bi-box-arrow-right"></i>-->
-                <li><a routerLink="login" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('login')">
+                <li><a routerLink="/login" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('login')">
                   <i class="bi bi-box-arrow-in-left"></i> Login</a></li>
               </ul>
             </div>
@@ -117,9 +106,9 @@
         </div>
       </nav>
     </div>
-    <div class="col" style="padding-left: 0px;padding-right: 0px; position:fixed" [ngStyle]="{ 'margin-left': isSidebarOpen ? ' 250px' : '1px' }">
-      <div class="custom-menu">
-        <button type="button" (click)="toggleSidebar()" class="btn border-0">
+    <div class="col-1">
+      <div class="custom-menu justify-content-end">
+        <button type="button" (click)="toggleSidebar(); sendEvent('closesidebar')" class="btn border-0">
           <i [ngClass]="[isSidebarOpen ? 'bi bi-chevron-compact-left':'bi bi-chevron-compact-right']" width="1em" height="1em"></i>
         </button>
       </div>

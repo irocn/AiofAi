@@ -3,95 +3,76 @@
   <title>Ai's Ai</title>
   <meta name="theme-color" content="#712cf9">
 </head>
-
-<body>
-  <div class="dropdown position-fixed end-0 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
-      aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-      <i class="bi bi-circle-half" width="1em" height="1em"></i>
-      <svg class="bi my-1 theme-icon-active" width="0em"
-        height="1em">
-        <use href="#circle-half"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-          aria-pressed="false">
-          <i class="bi bi-sun-fill" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em" height="1em">
-            <use href="#sun-fill"></use>
-          </svg>
-          Light
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-          aria-pressed="false">
-          <i class="bi bi-moon-stars-fill" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em"
-            height="1em">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Dark
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
-          aria-pressed="true">
-          <i class="bi bi-circle-half" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em"
-            height="1em">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-        </button>
-      </li>
-    </ul>
-  </div>
-  <div class="d-flex flex-nowrap">
-  <!-- sidebar -->
-  <app-sidebar></app-sidebar>     
-  <div class="col ">
-    <!-- site info -->
-    <div class="row g-0" *ngIf="toDisplayComponent === 'siteinfo'">
-      <app-bodycontainer></app-bodycontainer>
+<div class="dropdown position-fixed end-0 bd-mode-toggle" style="z-index: 9999;">
+  <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+    aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
+    <i class="bi bi-circle-half" width="1em" height="1em"></i>
+    <svg class="bi my-1 theme-icon-active" width="0em"
+      height="1em">
+      <use href="#circle-half"></use>
+    </svg>
+    <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+    <li>
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+        aria-pressed="false">
+        <i class="bi bi-sun-fill" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em" height="1em">
+          <use href="#sun-fill"></use>
+        </svg>
+        Light
+      </button>
+    </li>
+    <li>
+      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+        aria-pressed="false">
+        <i class="bi bi-moon-stars-fill" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em"
+          height="1em">
+          <use href="#moon-stars-fill"></use>
+        </svg>
+        Dark
+      </button>
+    </li>
+    <li>
+      <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto"
+        aria-pressed="true">
+        <i class="bi bi-circle-half" width="16" height="16"></i><svg class="bi me-2 opacity-50" width="0em"
+          height="1em">
+          <use href="#circle-half"></use>
+        </svg>
+        Auto
+      </button>
+    </li>
+  </ul>
+</div>
+<div class="container-fluid g-0">
+  <div class="row g-0" style="height: 100vh;">
+    <div class="col-1 border border-primary">
+      <app-sidebar></app-sidebar>
     </div>
-    <!-- help -->
-    <div class="row" *ngIf="toDisplayComponent === 'help'">
-      <app-helpme></app-helpme>
-    </div>
-    <!-- login -->
-    <div class="row" *ngIf="toDisplayComponent === 'login'">
-      <app-login></app-login>
-    </div>
-    <!-- loginout -->
-    <div class="row" *ngIf="toDisplayComponent === 'logout'">
-      <app-logout></app-logout>
-    </div>
-    <!-- setting -->
-    <div class="row" *ngIf="toDisplayComponent === 'setting'">
-      <app-setting></app-setting>
-    </div>
-    <!-- chat -->
-    <div class="row" *ngIf="toDisplayComponent === 'chat'">
-      <app-msgbody></app-msgbody>
-    </div>
-    <!-- subscribe -->
-    <div class="row" *ngIf="toDisplayComponent === 'subscribe'">
-      <app-subscribe></app-subscribe>
-    </div>    
-    <!-- inputbox -->
-    <div class="row" >
-      <app-inputmsgbox></app-inputmsgbox>
+    <div class="border border-primary" [ngClass]="[!isCloseSideBar ? 'col-11':'col-10']">
+      <div class="row justify-content-center g-0" >
+        <router-outlet></router-outlet>
+        </div>
+        <div class="row justify-content-center g-0" *ngIf="isShowInputBox">
+          <app-inputmsgbox></app-inputmsgbox>
+        </div>
     </div>
   </div>
 </div>
-  <script>
-    (() => {
-      'use strict'
-      const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      tooltipTriggerList.forEach(tooltipTriggerEl => {
-        new bootstrap.Tooltip(tooltipTriggerEl)
-      })
-    })()
-  </script>
-</body>
+
+
+<!-- col-sm-5 col-md-5 col-lg-5 col-xl-5
+    <div class="col-3 justify-content-start" style="width: 260px;">
+
+      <app-sidebar></app-sidebar>   
+    </div>
+    <div [ngClass]="[isCloseSideBar ? 'col-10 justify-content-center':'col-9 justify-content-center']">
+      <div class="row justify-content-center" >
+      <router-outlet></router-outlet>
+      </div>
+      <div class="row justify-content-centers" *ngIf="isShowInputBox">
+        <app-inputmsgbox></app-inputmsgbox>
+      </div>
+    </div>
+-->

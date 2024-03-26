@@ -2,6 +2,7 @@ use std::time::{Duration, Instant};
 
 use actix::prelude::*;
 use actix_web_actors::ws;
+use uuid::Uuid;
 
 use crate::server;
 
@@ -100,7 +101,6 @@ impl Handler<server::Message> for WsChatSession {
     type Result = ();
 
     fn handle(&mut self, msg: server::Message, ctx: &mut Self::Context) {
-        println!("this msg {}", msg.0);
         ctx.text(msg.0);
     }
 }
@@ -193,11 +193,14 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                     } else {
                         m.to_owned()
                     };
-                    // send message to peer by chat server
+                    // send message to chat server
+                    let uuid = Uuid::new_v4();
+                    let uuid_string = uuid.hyphenated().to_string();
                     self.addr.do_send(server::ClientMessage {
                         id: self.id,
+                        msgid: uuid_string,
                         msg,
-                        room: self.room.clone(),
+                        userid: self.room.clone(),
                     })
                 }
             }

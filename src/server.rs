@@ -44,10 +44,11 @@ pub struct Disconnect {
 pub struct ClientMessage {
     /// Id of the client session
     pub id: usize,
+    pub msgid: String,
     /// Peer message
     pub msg: String,
     /// Room name
-    pub room: String,
+    pub userid: String,
 }
 
 /// List of available rooms
@@ -92,16 +93,13 @@ pub struct ChatServer {
 }
 
 impl ChatServer {
-    pub fn new(visitor_count: Arc<AtomicUsize>) -> ChatServer {
-        // init db to save information
-        let _db = sled::open("chatDB").unwrap();
-
+    pub fn new(visitor_count: Arc<AtomicUsize>, _db:&sled::Db) -> ChatServer {
         ChatServer {
             sessions: HashMap::new(),
             rooms:HashMap::new(),
             rng: rand::thread_rng(),
             visitor_count,
-            db: _db,
+            db: _db.clone(),
         }
     }
 }
@@ -190,43 +188,40 @@ impl Handler<ClientMessage> for ChatServer {
     fn handle(&mut self, msg: ClientMessage, _: &mut Context<Self>) {
 
         // Save user chat request
-        println!("current client msg is, id:{},msg:{},room:{}", msg.id, msg.msg, msg.room);
+        println!("current client msg is, msgid:{},msg:{},room:{}", msg.msgid, msg.msg, msg.userid);
  
-        // for personal history
-        let mut _tree = self.db.open_tree(&msg.room).unwrap();
-        let _out = _tree.insert(&msg.room, msg.msg.as_bytes()).unwrap().unwrap();
-
         // Handle client chat request
-        if msg.room != "chatgpt" {
-            
-            // generate message id
-            let uuid = Uuid::new_v4();
-            let uuid_string = uuid.hyphenated().to_string();
-            let _json_msg = format!(r#"{{
-                                        "msgid":{},
+        if msg.userid != "chatgpt" {
+            let _json_msg_str = format!(r#"{{
+                                        "msgid":"{}",
                                         "msg":{}
                                     }}
-                                    "#, uuid_string, &msg.msg);
-            // to record message id to submit to chatgpt
-            _tree = self.db.open_tree("chatgpt").unwrap();
-            _tree.insert(uuid_string, msg.room.as_bytes()).unwrap().unwrap();
+                                    "#, &msg.msgid, &msg.msg);
+            
+            // save user chat request into meilisearch document
+            let user_db = self.db.open_tree(&msg.userid).unwrap();
+
+            let _json_msg:Value = serde_json::from_str(&_json_msg_str).unwrap();
+            user_db.insert(&msg.msgid.as_bytes(), msg.msg.as_bytes()).unwrap();
+            let _ = user_db.flush();
+
+            let chatgpt_db = self.db.open_tree("chatgpt").unwrap();
+            chatgpt_db.insert(&msg.msgid.as_bytes(), &*msg.userid.as_bytes()).unwrap();
+            let _ = chatgpt_db.flush();
 
             // send message to chatgpt
-            self.send_message("chatgpt", &_json_msg, 0);
+            self.send_message("chatgpt", &_json_msg_str, 0);
         }
 
         // Handle chatgpt response
-        if msg.room == "chatgpt" {
-            // open tree
-            _tree = self.db.open_tree("chatgpt").unwrap();
-            // to find userid by message_id
-            let _json_msg:Value = serde_json::from_str(&msg.msg.as_str()).unwrap();
-            let _key = _json_msg["message"].to_string();
-            let mut _userid = _tree.get(&_key).unwrap().unwrap();
-            let __userid = String::from_utf8_lossy(&_userid);
-
-            // to send msg to this userid
-            self.send_message(&__userid, &msg.msg.as_str(), 0);
+        if msg.userid == "chatgpt" {
+            let chatgpt_db = self.db.open_tree("chatgpt").unwrap();
+            //find this message related to user
+            let msg_json:Value = serde_json::from_str(&msg.msg).unwrap();
+            let userid = chatgpt_db.get(&msg_json["msgid"].to_string().trim_matches('"').as_bytes()).unwrap().unwrap();
+            let _user = String::from_utf8_lossy(userid.as_ref());
+            println!("use key {} to find user {}", &msg_json["msgid"], _user);
+            self.send_message(&_user, &msg.msg.as_str(), 0);
         }
     }
 }

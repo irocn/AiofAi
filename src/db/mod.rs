@@ -53,26 +53,23 @@ mod tests {
     #[test]
     fn test_db_tree(){
             // Open or create a Sled database
-    let db = Db::open("my_database").unwrap();
+    let db = Db::open("chatDB").unwrap();
 
     // Open a tree named "users"
     let users_tree = db.open_tree("users").unwrap();
 
-    // Insert some data into the "users" tree
-    users_tree.insert(b"1", b"Alice").unwrap();
-    users_tree.insert(b"2", b"Bob").unwrap();
 
     // Open another tree named "products"
-    let products_tree = db.open_tree("products").unwrap();
+    let products_tree = db.open_tree("haogle").unwrap();
 
-    // Insert some data into the "products" tree
-    products_tree.insert(b"101", b"Book").unwrap();
-    products_tree.insert(b"102", b"Laptop").unwrap();
+    let _u = [34, 48, 48, 49, 56, 54, 49, 99, 51, 45, 101, 54, 102, 99, 45, 52, 53, 97, 97, 45, 57, 50, 100, 48, 45, 102, 50, 50, 100, 52, 50, 53, 52, 98, 102, 49, 48, 34];
+    println!("{}", String::from_utf8((&_u).to_vec()).unwrap().as_str());
 
+    //let out = products_tree.get(String::from_utf8_lossy(&_u).as_bytes()).unwrap().unwrap();
+    //println!("{}", String::from_utf8_lossy(out.as_ref()));
 
     products_tree.iter().all(|x|{
-        println!("===Product with key 101: {:?}", String::from_utf8_lossy(&x.clone().unwrap().0.as_ref()));
-        println!("===Product with key 101: {:?}", String::from_utf8_lossy(&x.unwrap().1.as_ref()));
+        println!("{:?}====>{:?}", String::from_utf8_lossy(&x.clone().unwrap().0.as_ref()), String::from_utf8_lossy(&x.unwrap().1.as_ref()));
         true
     });
     }
