@@ -22,10 +22,10 @@
     background-color: transparent;
   }    
 </style>
-<div class="container">
+<div class="container-fluid center-align">
       <!-- Conversation list -->
-      <div class="row" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
-        <div class="col">
+      <div class="d-flex flex-column" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
+        <div class="flex-grow-1">
           <div class="scrollable-div">
             <div class="scroll-content" #messageContainer>
               <h3>{{ title }}</h3>
@@ -36,11 +36,4 @@
           </div>
         </div>
       </div>
-      <!--
-      <ul>
-        <li [class.active]="isRouteSelected('/help')">help</li>
-        <li [class.active]="isRouteSelected('/settings')">settings</li>
-        <li [class.active]="isRouteSelected('/login')">login</li>
-      </ul>
-      -->
 </div>

@@ -7,7 +7,7 @@
     transition: all .3s;
     height: 100%;
   }
-  
+
   .custom-menu .btn {
     margin-top: calc(100vh/2.25);
     position: relative;
@@ -19,7 +19,7 @@
     /* Enable vertical scrollbar */
     overflow-y: auto;
     /* Subtract header and footer height */
-    max-height: calc(100vh - 70px - 60px);
+    max-height: calc(100vh - 153px);
   }
 
   /* Transparent scrollbar */
@@ -27,9 +27,11 @@
     display: none;
     width: 5px;
   }
+
   .sidebar-content:hover::-webkit-scrollbar {
-      display: block;
-    }
+    display: block;
+  }
+
   .sidebar-content::-webkit-scrollbar-thumb {
     /* Semi-transparent white */
     background-color: rgba(113, 102, 102, 0.5);
@@ -40,82 +42,61 @@
     /* Transparent background */
     background-color: transparent;
   }
+
   .no-wrap {
-    white-space: nowrap; /* Prevent word wrapping */
-    overflow-x: hidden;    /* Prevent overflow */
-    text-overflow: ellipsis; /* Add ellipsis for truncated text */
-    margin-left: -32px;
-    }
-  /* Hide sidebar on smaller screens */
-  @media (max-width: 500px) {
-    .sidebar {
-      display: none;
-      z-index: 9999;
-      background-color: rgb(170, 162, 162);
-    }
+    white-space: nowrap;
+    /* Prevent word wrapping */
+    overflow-x: hidden;
+    /* Prevent overflow */
+    text-overflow: ellipsis;
+    /* Add ellipsis for truncated text */
   }
 </style>
 <div class="container g-0">
-  <div class="row align-items-start g-0">
-    <div class="col-11" [ngStyle]="{ 'display': isSidebarOpen ? 'block' : 'none' }">
-      <nav class="flex-column">
-        <div class="flex-column">
-          <header class="justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline btn-lg" (click)="sendEvent('bodybox')" style="border: 0px;">
-              <img src="../../assets/iedux-pro-red.png" width="235px" height="45px">  <!--https://app.logo.com/editor/layouts-->
-            </button>
-          </header>
-          <div class="p-2 sidebar-content no-wrap">
-            <ul class="nav nav-pills flex-column" style="text-align:center;margin-left: 80px; position: fixed;">
-              <li class="nav-item">
-                <button type="button" class="btn btn-outline-secondary border-0" (click)="sendEvent('chat')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7929 2.79289C18.0118 1.57394 19.9882 1.57394 21.2071 2.79289C22.4261 4.01184 22.4261 5.98815 21.2071 7.20711L12.7071 15.7071C12.5196 15.8946 12.2652 16 12 16H9C8.44772 16 8 15.5523 8 15V12C8 11.7348 8.10536 11.4804 8.29289 11.2929L16.7929 2.79289ZM19.7929 4.20711C19.355 3.7692 18.645 3.7692 18.2071 4.2071L10 12.4142V14H11.5858L19.7929 5.79289C20.2308 5.35499 20.2308 4.64501 19.7929 4.20711ZM6 5C5.44772 5 5 5.44771 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V14C19 13.4477 19.4477 13 20 13C20.5523 13 21 13.4477 21 14V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34314 4.34315 3 6 3H10C10.5523 3 11 3.44771 11 4C11 4.55228 10.5523 5 10 5H6Z" fill="currentColor"/>
-                  </svg>
-                </button>
-              </li>
-            </ul>
-            <ul style="margin-top: 40px;list-style: circle;">
-              <li *ngFor="let chat of chats"><a [href]="'/' + chat.id" style="text-decoration: none;">{{ chat.msg }}</a></li>       
-            </ul>
-          </div>
-          <footer class="p-3 footer" style="position:fixed;bottom: 10px;">
-            <div class="dropdown">
-              <a href="#" class="align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../../assets/chatgpt-logo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <small>Haogle</small>
-              </a>
-              <ul class="dropdown-menu text-small shadow">
-                <li><a routerLink="settings" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('subscribe')">
-                  <i class="bi bi-credit-card-2-front"></i> Subscribe</a></li>
-                <li><a routerLink="settings" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('setting')">
-                  <i class="bi bi-gear"></i> Settings</a></li>
-    
-                <li><a routerLink="help" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('help')">
-                  <i class="bi bi-question-circle"></i> Help</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <!--<i class="bi bi-box-arrow-right"></i>-->
-                <li><a routerLink="/login" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('login')">
-                  <i class="bi bi-box-arrow-in-left"></i> Login</a></li>
-              </ul>
-            </div>
-          </footer>
-        </div>
-      </nav>
+  <div class="d-flex flex-column vh-100">
+    <div class="d-flex justify-content-center border border-primary">
+      <button type="button" class="btn btn-outline btn-lg" (click)="sendEvent('bodybox')">
+        <img src="../../assets/iedux-pro-red.png">
+        <!--https://app.logo.com/editor/layouts-->
+      </button>
     </div>
-    <div class="col-1">
-      <div class="custom-menu justify-content-end">
-        <button type="button" (click)="toggleSidebar(); sendEvent('closesidebar')" class="btn border-0">
-          <i [ngClass]="[isSidebarOpen ? 'bi bi-chevron-compact-left':'bi bi-chevron-compact-right']" width="1em" height="1em"></i>
+    <div class="d-flex justify-content-center border border-primary">
+        <button type="button" class="btn btn-outline-secondary border-0" (click)="sendEvent('chat')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart"
+            viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M16.7929 2.79289C18.0118 1.57394 19.9882 1.57394 21.2071 2.79289C22.4261 4.01184 22.4261 5.98815 21.2071 7.20711L12.7071 15.7071C12.5196 15.8946 12.2652 16 12 16H9C8.44772 16 8 15.5523 8 15V12C8 11.7348 8.10536 11.4804 8.29289 11.2929L16.7929 2.79289ZM19.7929 4.20711C19.355 3.7692 18.645 3.7692 18.2071 4.2071L10 12.4142V14H11.5858L19.7929 5.79289C20.2308 5.35499 20.2308 4.64501 19.7929 4.20711ZM6 5C5.44772 5 5 5.44771 5 6V18C5 18.5523 5.44772 19 6 19H18C18.5523 19 19 18.5523 19 18V14C19 13.4477 19.4477 13 20 13C20.5523 13 21 13.4477 21 14V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34314 4.34315 3 6 3H10C10.5523 3 11 3.44771 11 4C11 4.55228 10.5523 5 10 5H6Z"
+              fill="currentColor" />
+          </svg>
         </button>
-      </div>
     </div>
-  </div>
+    <div class="d-flex flex-grow-1 justify-content-center sidebar-content no-wrap border border-primary">
+      <ul style="list-style: circle;">
+        <li *ngFor="let chat of chats"><a [href]="'/' + chat.id" style="text-decoration: none;">{{ chat.msg }}</a></li>
+      </ul>
+    </div>   
+    <div class="d-flex mt-auto align-items-center border  border-primary">
+        <div class="dropdown">
+          <a href="#" class="link-body-emphasis text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="../../assets/chatgpt-logo.png" width="32" height="32" class="rounded-circle me-2">
+            <small>Haogle</small>
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a routerLink="settings" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('subscribe')">
+                <i class="bi bi-credit-card-2-front"></i> Subscribe</a></li>
+            <li><a routerLink="settings" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('setting')">
+                <i class="bi bi-gear"></i> Settings</a></li>
+    
+            <li><a routerLink="help" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('help')">
+                <i class="bi bi-question-circle"></i> Help</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a routerLink="/login" class="cursor-pointer dropdown-item fs-6" (click)="sendEvent('login')">
+                <i class="bi bi-box-arrow-in-left"></i> Login</a></li>
+          </ul>
+        </div>
+    </div>    
+  </div> 
 </div>
-
-<!--
-
--->

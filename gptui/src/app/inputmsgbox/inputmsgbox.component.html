@@ -1,32 +1,32 @@
-<head>
-    <style>
+<style>
+    .fixed-input {
+        width: 95%;
+        padding: 10px;
+        display: unset !important;
+    }
+
+    @media (max-width: 992px) {
         .fixed-input {
-            width: 80%;
-            padding: 10px;
-            display: unset !important;
+            width: 85%;
+            display: block !important;
         }
 
-        @media (max-width: 992px) {
-            .fixed-input {
-                width: 85%;
-                display: block !important;
-            }
-            .footer{
-                display: none;
-            }
+        .footer {
+            display: none;
         }
+    }
 
-        /* Remove focus effect from input */
-        input:focus {
-            outline: none !important;
-            box-shadow: none !important;
-        }
-    </style>
-</head>
-<div class="container">
-    <div class="container text-center" style="position:fixed;bottom: 10px;">
-        <input type="text" class="fixed-input form-control rounded" [(ngModel)]="message" (keyup.enter)="sendMessage()" placeholder="Chat with ChatGPT ..."/>
-        <footer class="footer mt-auto py-3">
+    /* Remove focus effect from input */
+    input:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+</style>
+<div class="container-fluid center-align">
+    <div class="d-flex flex-column justify-content-center">
+        <input type="text" class="d-flex form-control flex-grow-1 rounded" [(ngModel)]="message" (keyup.enter)="sendMessage()"
+            placeholder="Chat with ChatGPT ..." />
+        <footer class="footer mt-auto">
             <small class="text-center fw-lighter">&copy; 2024 iEduX.pro (沪ICP备16027900号-1). All rights reserved.</small>
         </footer>
     </div>

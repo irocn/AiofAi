@@ -40,7 +40,6 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppComponent{
   
   isShowInputBox = false;
-  isCloseSideBar = false;
 
   constructor(private eventService: EventsService, private router: Router){
     this.eventService.getEvent().subscribe((event: any) => {
@@ -73,14 +72,15 @@ export class AppComponent{
           this.isShowInputBox = false;
           this.router.navigate(['/subscribe']);
         break;    
-        case 'closesidebar':
-          this.isCloseSideBar = !this.isCloseSideBar;
-          console.log("closesidebar");
-        break;
       }
     });
   }
 
   title = 'Hello Gpt!';
+  isSidebarOpen: boolean = true;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }
 

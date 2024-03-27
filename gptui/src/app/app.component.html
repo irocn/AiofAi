@@ -46,33 +46,27 @@
   </ul>
 </div>
 <div class="container-fluid g-0">
-  <div class="row g-0" style="height: 100vh;">
-    <div class="col-1 border border-primary">
+  <div class="d-flex justify-content-start w-100 vh-100">
+    <!-- sidebar -->
+    <div class="border border-primary vh-100" [ngClass]="{ 'd-none': !isSidebarOpen }">
       <app-sidebar></app-sidebar>
     </div>
-    <div class="border border-primary" [ngClass]="[!isCloseSideBar ? 'col-11':'col-10']">
-      <div class="row justify-content-center g-0" >
-        <router-outlet></router-outlet>
+    <!-- sidebar button -->
+    <div class="d-flex align-items-center justify-content-center border-primary vh-100" style="width: 25px;">
+        <button type="button" (click)="toggleSidebar()" class="btn border-0">
+          <i [ngClass]="[isSidebarOpen ? 'bi bi-chevron-compact-left':'bi bi-chevron-compact-right']" width="1em" height="1em"></i>
+        </button>
+    </div>
+    <!-- body -->
+    <div class="d-flex flex-grow-1 border border-primary vh-100">
+      <div class="d-flex flex-column w-100">
+        <div class="d-flex flex-grow-1 justify-content-center" >
+          <router-outlet></router-outlet>
         </div>
-        <div class="row justify-content-center g-0" *ngIf="isShowInputBox">
+        <div class="d-flex flex-grow-1 mt-auto justify-content-center" *ngIf="isShowInputBox">
           <app-inputmsgbox></app-inputmsgbox>
         </div>
+      </div>
     </div>
-  </div>
+    </div>
 </div>
-
-
-<!-- col-sm-5 col-md-5 col-lg-5 col-xl-5
-    <div class="col-3 justify-content-start" style="width: 260px;">
-
-      <app-sidebar></app-sidebar>   
-    </div>
-    <div [ngClass]="[isCloseSideBar ? 'col-10 justify-content-center':'col-9 justify-content-center']">
-      <div class="row justify-content-center" >
-      <router-outlet></router-outlet>
-      </div>
-      <div class="row justify-content-centers" *ngIf="isShowInputBox">
-        <app-inputmsgbox></app-inputmsgbox>
-      </div>
-    </div>
--->

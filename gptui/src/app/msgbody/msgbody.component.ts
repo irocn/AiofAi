@@ -24,7 +24,7 @@ export class MsgbodyComponent implements AfterViewInit{
 
 
   // Message
-  title: string = "";
+  title: string = "###";
   constructor(private WebSocketService: WebSocketService, private eventService: EventsService) {}
 
   ngAfterViewInit(): void {
