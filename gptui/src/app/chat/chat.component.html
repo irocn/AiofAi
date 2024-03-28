@@ -20,12 +20,16 @@
   .scrollable-div::-webkit-scrollbar-track {
     /* Transparent background */
     background-color: transparent;
-  }    
+  }
+  input:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }  
 </style>
 <div class="container-fluid center-align">
       <!-- Conversation list -->
-      <div class="d-flex flex-column" style="margin-top:20px; margin-left: 60px; margin-right: 60px;">
-        <div class="flex-grow-1">
+      <div class="d-flex flex-column align-items-center vh-100">
+        <div class="d-flex justify-content-start">
           <div class="scrollable-div">
             <div class="scroll-content" #messageContainer>
               <h3>{{ title }}</h3>
@@ -35,5 +39,13 @@
             </div>
           </div>
         </div>
+        <div class="d-flex row justify-content-center mt-auto">
+            <input type="text" class="d-flex form-control flex-grow-1 rounded mb-2" [(ngModel)]="message"
+                (keyup.enter)="sendMessage()" placeholder="Chat with ChatGPT ..." />
+                <footer class="text-center">
+                  <small class="mb-0">Disclaimer: This is NOT the real ChatGPT, but a wrapper using
+                    ChatGPT and others GPTs ! </small>
+                </footer>
+        </div>        
       </div>
 </div>

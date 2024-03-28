@@ -1,31 +1,27 @@
-import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { WebSocketService } from "../websocket.service";
-import { provideMarkdown } from 'ngx-markdown';
-import { MarkdownModule } from 'ngx-markdown';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { WebSocketService } from '../websocket.service';
 import { EventsService } from '../events.service';
-
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 
 @Component({
-  selector: 'app-msgbody',
+  selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule,MarkdownModule],
-  templateUrl: './msgbody.component.html',
-  styleUrl: './msgbody.component.scss',
+  imports: [FormsModule,CommonModule,MarkdownModule],
+  templateUrl: './chat.component.html',
+  styleUrl: './chat.component.scss',
   providers: [provideMarkdown()],
 })
-export class MsgbodyComponent implements AfterViewInit{
+export class ChatComponent {
+  title: string = '';
+  message: String = '';
+  markdown = ``;
+  startChat: boolean = false;
+  receivedMessages:{[conversation_id: string]:string} = {};
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
-
-  // Conversion variable
-  receivedMessages:{[conversation_id: string]:string} = {};
-  markdown = ``;
-
-
-  // Message
-  title: string = "###";
-  constructor(private WebSocketService: WebSocketService, private eventService: EventsService) {}
+  constructor(private websocket: WebSocketService, private eventService: EventsService) {}
 
   ngAfterViewInit(): void {
     this.eventService.sendEvent('msgbox');
@@ -35,7 +31,7 @@ export class MsgbodyComponent implements AfterViewInit{
   }
 
   ngOnInit(): void {
-    this.WebSocketService.getMessage().subscribe(
+    this.websocket.getMessage().subscribe(
       message => {
         // When have message received to don't display the messagboard
 
@@ -79,4 +75,15 @@ export class MsgbodyComponent implements AfterViewInit{
       error => console.error('Error receiving message:', error)
     );
   }
+
+  sendMessage() {
+    if ( this.startChat == false){
+      this.eventService.sendEvent('chat');
+      this.startChat = true;
+
+    }
+    this.websocket.sendMessage(this.message);
+  }
+
+
 }

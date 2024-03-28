@@ -1,71 +1,79 @@
+<style>
+    .w-50 {
+        width: 80%;
+    }
+
+    @media (max-width: 844px) {
+        .w-m-50 {
+            width: 100% !important;
+        }
+    }
+</style>
 <div class="container-fluid center-align">
-    <div class="row justify-content-sm-center">
-        <div class="col-xxl-6 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-            <div class="text-center my-5">
-                <img src="../../assets/logos/irocn.png" alt="logo" width="80px">
-            </div>
-            <div class="d-flex row row-cols-1 row-cols-md-3 mb-3 align-items-stretch">
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100">
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Free</h4>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small>
-                            </h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>For people just getting started with ChatGPT</li>
-                                <li>Unlimited messages, interactions, and history</li>
-                                <li>Access to our GPT-3.5 model</li>
-                                <li>Access on Web, iOS, and Android</li>
-                            </ul>
-                            <button type="button" class="mt-auto w-100 btn btn-lg btn-outline-secondary">Sign up for free</button>
-                        </div>
+    <div class="d-flex flex-column vh-100 justify-content-center align-items-center">
+        <div class="text-center my-5">
+            <img src="../../assets/logos/irocn.png" alt="logo" width="80px">
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 w-50 w-m-50">
+            <div class="col-md-4 mb-3 d-flex justify-content-center">
+                <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Free</h4>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100">
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Pro</h4>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small>
-                            </h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>Everything in Free, and:</li>
-                                <li>Access to GPT-4, our most capable model</li>
-                                <li>Browse, create, and use GPTs</li>
-                                <li>Access to additional tools like DALL·E, Browsing, Advanced Data Analysis and more</li>
-                            </ul>
-                            <button type="button" class="mt-auto w-100 btn btn-lg btn-secondary">Get started</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100 border-secondary">
-                        <div class="card-header py-3 text-white bg-secondary border-secondary">
-                            <h4 class="my-0 fw-normal">Enterprise</h4>
-                        </div>
-                        <div class="card-body d-flex flex-column">
-                            <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small>
-                            </h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                                <li>Everything in Plus, and:</li>
-                                <li>Higher message caps on GPT-4 and tools like DALL·E, Browsing, Advanced Data Analysis, and more</li>
-                                <li>Create and share GPTs with your workspace</li>
-                                <li>Admin console for workspace management</li>
-                            </ul>
-                            <button type="button" class="mt-auto w-100 btn btn-lg btn-secondary">Contact us</button>
-                        </div>
+                    <div class="card-body d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>For people just getting started with ChatGPT</li>
+                            <li>Unlimited messages, interactions, and history</li>
+                            <li>Access to our GPT-3.5 model</li>
+                            <li>Access on Web, iOS, and Android</li>
+                        </ul>
+                        <button type="button" class="mt-auto w-100 btn btn-lg btn-outline-secondary">Sign up for
+                            free</button>
                     </div>
                 </div>
             </div>
-            <div class="card-footer py-3 border-0">
-                <div class="text-center">
-                    <small class="text-center fw-lighter">&copy; 2024 iEduX.pro (沪ICP备16027900号-1). All rights
-                        reserved.</small>
+            <div class="col-md-4 mb-3 d-flex justify-content-center">
+                <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Pro</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Everything in Free, and:</li>
+                            <li>Access to GPT-4, our most capable model</li>
+                            <li>Browse, create, and use GPTs</li>
+                            <li>Access to additional tools like DALL·E, Browsing, Advanced Data Analysis and more</li>
+                        </ul>
+                        <button type="button" class="mt-auto w-100 btn btn-lg btn-secondary">Get started</button>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-4 mb-3 d-flex justify-content-center">
+                <div class="card mb-4 rounded-3 shadow-sm card w-100 h-100 border-secondary">
+                    <div class="card-header py-3 text-white bg-secondary border-secondary">
+                        <h4 class="my-0 fw-normal">Enterprise</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Everything in Plus, and:</li>
+                            <li>Higher message caps on GPT-4 and tools like DALL·E, Browsing, Advanced Data Analysis,
+                                and more</li>
+                            <li>Create and share GPTs with your workspace</li>
+                            <li>Admin console for workspace management</li>
+                        </ul>
+                        <button type="button" class="mt-auto w-100 btn btn-lg btn-secondary">Contact us</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-auto">
+            <small class="text-center fw-lighter">&copy; 2024 iEduX.pro (沪ICP备16027900号-1). All rights reserved.</small>
         </div>
     </div>
 </div>
